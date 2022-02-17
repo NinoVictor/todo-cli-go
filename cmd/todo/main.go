@@ -8,9 +8,12 @@ import (
 	"pragprog.com/rggo/interacting/todo"
 )
 
-const todoFileName = ".todo.json"
+var todoFileName = ".todo.json"
 
 func main() {
+        if os.Getenv("TODO_FILENAME") != ""{
+                todoFileName = os.Getenv("TODO_FILENAME")
+        }
 	flag.Usage = func() {
 		fmt.Fprintf(flag.CommandLine.Output(), "%s tool Developed by vNino\n", os.Args[0])
 		fmt.Fprintf(flag.CommandLine.Output(), "Copyright 2021\n")
