@@ -1,7 +1,9 @@
 package todo_test
 
 import (
+	"fmt"
 	"os"
+	"strings"
 	"testing"
 
 	"pragprog.com/rggo/interacting/todo"
@@ -64,7 +66,31 @@ func TestDelete(t *testing.T) {
 		t.Errorf("Expected %q, got %q instead", tasks[2], l[1].Task)
 	}
 }
+func TestPrint(t *testing.T) {
+	l := todo.List{}
 
+	taskName := "New task"
+	l.Add(taskName)
+
+	expectedNotVerbose := fmt.Sprintf("1:%s\n", taskName)
+	if expectedNotVerbose != l.Print(false, false) {
+		t.Errorf("Expected %q, got %q instead\n", expectedNotVerbose, l.Print(false, false))
+	}
+
+	if !strings.Contains(l.Print(true, false), "Creada") {
+		t.Errorf("Expected Creada, got %q instead", l.Print(true, false))
+	}
+
+	taskName2 := "New task2"
+	l.Add(taskName2)
+	l.Complete(2)
+	expectedDoneTasks := fmt.Sprintf("1:%s\nX2:%s\n", taskName, taskName2)
+
+	if expectedDoneTasks != l.Print(false, true) {
+		t.Errorf("Expected %q, got %q instead", expectedDoneTasks, l.Print(false, true))
+	}
+
+}
 func TestSaveGet(t *testing.T) {
 	l1 := todo.List{}
 	l2 := todo.List{}

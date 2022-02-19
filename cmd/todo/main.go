@@ -29,6 +29,8 @@ func main() {
 	list := flag.Bool("list", false, "List all tasks")
 	complete := flag.Int("complete", 0, "Item to be completed")
 	del := flag.Int("delete", 0, "Delete task to the ToDo list")
+	done := flag.Bool("done", false, "List done tasks")
+	verb := flag.Bool("verbose", false, "Print list verbose")
 	flag.Parse()
 
 	l := &todo.List{}
@@ -38,7 +40,8 @@ func main() {
 	}
 	switch {
 	case *list:
-		fmt.Print(l)
+		fmt.Print(l.Print(*verb, *done))
+
 	case *complete > 0:
 		if err := l.Complete(*complete); err != nil {
 			fmt.Fprintln(os.Stderr, err)

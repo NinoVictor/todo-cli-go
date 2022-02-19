@@ -76,14 +76,29 @@ func (l *List) Get(filename string) error {
 	return json.Unmarshal(file, l)
 }
 
-func (l *List) String() string {
-        formatted := ""
-        for k, t := range *l {
-                prefix := ""
-                if t.Done {
-                        prefix = "X"
-                }
-                formatted += fmt.Sprintf("%s%d:%s\n", prefix, k+1, t.Task)
-        }
-        return formatted
+func (l *List) Print(verbose bool, done bool) string {
+	formatted := ""
+	for k, t := range *l {
+		prefix := ""
+		format := ""
+		if t.Done {
+			prefix = "X"
+		}
+		if verbose {
+			format = fmt.Sprintf("%s%d:%s - Creada:%s\n", prefix, k+1, t.Task, t.CreatedAt.Format("02-01-2006 15:04:05"))
+		} else {
+
+			format = fmt.Sprintf("%s%d:%s\n", prefix, k+1, t.Task)
+		}
+
+		if t.Done {
+			if done {
+				formatted += format
+			}
+		} else {
+			formatted += format
+		}
+
+	}
+	return formatted
 }
